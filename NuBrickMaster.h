@@ -46,10 +46,10 @@
  *
  *  @note For internal use
  */
-#define NUBRICK_CHECK_CONNECT()                                                                        \
+#define NUBRICK_CHECK_CONNECT()                                                                     \
     do {                                                                                            \
         if (! _connected) {                                                                         \
-            NUBRICK_ERROR_RETURN_FALSE("NuMaker Brick I2C slave module not connected yet!!!\n");    \
+            NUBRICK_ERROR_RETURN_FALSE("NuMaker Brick I2C slave module not connected yet!!!\r\n");  \
         }                                                                                           \
     } while (0);
     

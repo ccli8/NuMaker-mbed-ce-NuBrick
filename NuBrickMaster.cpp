@@ -55,12 +55,12 @@ bool NuBrickMaster::connect(void) {
     // Get device descriptor
     if (! pull_device_desc()) {
         _connected = false;
-        NUBRICK_ERROR_RETURN_FALSE("pull_device_desc() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("pull_device_desc() failed\r\n");
     }
     // Get report descriptor
     if (! pull_report_desc()) {
         _connected = false;
-        NUBRICK_ERROR_RETURN_FALSE("pull_report_desc() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("pull_report_desc() failed\r\n");
     }
     
     _connected = true;
@@ -72,12 +72,12 @@ NuBrickField &NuBrickMaster::operator[](const char *report_field_name) {
     MutexGuard guard;
     
     if (! report_field_name) {
-        NUBRICK_ERROR_RETURN_NULL_FIELD("NULL string not support\n");
+        NUBRICK_ERROR_RETURN_NULL_FIELD("NULL string not support\r\n");
     }
     
     const char *dot_plus_field_name = strchr(report_field_name, '.');
     if (dot_plus_field_name == NULL) {
-        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\n", report_field_name);
+        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\r\n", report_field_name);
     }
   
     const char *field_name = dot_plus_field_name + 1;
@@ -94,7 +94,7 @@ NuBrickField &NuBrickMaster::operator[](const char *report_field_name) {
                 return *field;
             }
         }
-        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\n", report_field_name);
+        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\r\n", report_field_name);
     }
     else if (strncmp("input", report_field_name, report_name_len) == 0) {
         NuBrickField *field = _input_report_fields;
@@ -107,7 +107,7 @@ NuBrickField &NuBrickMaster::operator[](const char *report_field_name) {
                 return *field;
             }
         }
-        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\n", report_field_name);
+        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\r\n", report_field_name);
         
     }
     else if (strncmp("output", report_field_name, report_name_len) == 0) {
@@ -121,10 +121,10 @@ NuBrickField &NuBrickMaster::operator[](const char *report_field_name) {
                 return *field;
             }
         }
-        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\n", report_field_name);
+        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\r\n", report_field_name);
     }
     else {
-        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\n", report_field_name);
+        NUBRICK_ERROR_RETURN_NULL_FIELD("%s not support\r\n", report_field_name);
     }
     
 }
@@ -136,18 +136,18 @@ bool NuBrickMaster::pull_device_desc(void) {
     // Send GetDeviceDescriptor command
     nu_set16_le(_i2c_buf, NuBrick_Comm_GetDeviceDesc);    
     if (_i2c.write(_i2c_addr, (char *) _i2c_buf, 2, true)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\r\n");
     }
     
     // Receive device descriptor
     if (_i2c.read(_i2c_addr, (char *) _i2c_buf, NuBrick_DeviceDesc_Len, false)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\r\n");
     }
     
     // Un-serialize device descriptor
     _i2c_buf_pos = _i2c_buf;
     if (! unserialize_device_desc()) {
-        NUBRICK_ERROR_RETURN_FALSE("unserialize_device_desc() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("unserialize_device_desc() failed\r\n");
     }
     
     return true;
@@ -160,18 +160,18 @@ bool NuBrickMaster::pull_report_desc(void) {
     // Send GetReportDescriptor command
     nu_set16_le(_i2c_buf, NuBrick_Comm_GetReportDesc);    
     if (_i2c.write(_i2c_addr, (char *) _i2c_buf, 2, true)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\r\n");
     }
     
     // Receive report descriptor
     if (_i2c.read(_i2c_addr, (char *) _i2c_buf, _dev_desc.report_desc_len, false)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\r\n");
     }
     
     // Un-serialize report descriptor
     _i2c_buf_pos = _i2c_buf;
     if (! unserialize_report_desc()) {
-        NUBRICK_ERROR_RETURN_FALSE("unserialize_report_desc() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("unserialize_report_desc() failed\r\n");
     }
     
     return true;
@@ -186,18 +186,18 @@ bool NuBrickMaster::pull_input_report(void) {
     // Send GetInputReport command
     nu_set16_le(_i2c_buf, NuBrick_Comm_GetInputReport);    
     if (_i2c.write(_i2c_addr, (char *) _i2c_buf, 2, true)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\r\n");
     }
     
     // Receive input report
     if (_i2c.read(_i2c_addr, (char *) _i2c_buf, _dev_desc.input_report_len, false)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\r\n");
     }
     
     // Un-serialize input report
     _i2c_buf_pos = _i2c_buf;
     if (! unserialize_input_report()) {
-        NUBRICK_ERROR_RETURN_FALSE("unserialize_input_report() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("unserialize_input_report() failed\r\n");
     }
     
     return true;
@@ -216,12 +216,12 @@ bool NuBrickMaster::push_output_report(void) {
     
     // Serialize output report
     if (! serialize_output_report()) {
-        NUBRICK_ERROR_RETURN_FALSE("serialize_output_report() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("serialize_output_report() failed\r\n");
     }
     
     // Send Output report
     if (_i2c.write(_i2c_addr, (char *) _i2c_buf, _i2c_buf_pos - _i2c_buf, false)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\r\n");
     }
     
     return true;
@@ -236,18 +236,18 @@ bool NuBrickMaster::pull_feature_report(void) {
     // Send GetFeatureReport command
     nu_set16_le(_i2c_buf, NuBrick_Comm_GetFeatureReport);    
     if (_i2c.write(_i2c_addr, (char *) _i2c_buf, 2, true)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\r\n");
     }
     
     // Receive feature report
     if (_i2c.read(_i2c_addr, (char *) _i2c_buf, _dev_desc.getfeat_report_len, false)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.read() failed\r\n");
     }
     
     // Un-serialize feature report
     _i2c_buf_pos = _i2c_buf;
     if (! unserialize_feature_report()) {
-        NUBRICK_ERROR_RETURN_FALSE("unserialize_feature_report() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("unserialize_feature_report() failed\r\n");
     }
     
     return true;
@@ -266,12 +266,12 @@ bool NuBrickMaster::push_feature_report(void) {
    
     // Serialize feature report
     if (! serialize_feature_report()) {
-        NUBRICK_ERROR_RETURN_FALSE("serialize_feature_report() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("serialize_feature_report() failed\r\n");
     }
     
     // Send feature report
     if (_i2c.write(_i2c_addr, (char *) _i2c_buf, _i2c_buf_pos - _i2c_buf, false)) {
-        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\n");
+        NUBRICK_ERROR_RETURN_FALSE("i2c.write() failed\r\n");
     }
     
     return true;
@@ -283,17 +283,17 @@ bool NuBrickMaster::print_device_desc(void) {
     
     NUBRICK_CHECK_CONNECT();
     
-    printf("Device descriptor length\t\t%d\n", _dev_desc.dev_desc_len);
-    printf("Report descriptor length\t\t%d\n", _dev_desc.report_desc_len);
-    printf("Input report length\t\t\t%d\n", _dev_desc.input_report_len);
-    printf("Output report length\t\t\t%d\n", _dev_desc.output_report_len);
-    printf("Get feature report length\t\t%d\n", _dev_desc.getfeat_report_len);
-    printf("Set feature report length\t\t%d\n", _dev_desc.setfeat_report_len);
-    printf("Company ID\t\t\t\t%d\n", _dev_desc.cid);
-    printf("Device ID\t\t\t\t%d\n", _dev_desc.did);
-    printf("Product ID\t\t\t\t%d\n", _dev_desc.pid);
-    printf("Product ID\t\t\t\t%d\n", _dev_desc.uid);
-    printf("Product ID\t\t\t\t%d\n", _dev_desc.ucid);
+    printf("Device descriptor length\t\t%d\r\n", _dev_desc.dev_desc_len);
+    printf("Report descriptor length\t\t%d\r\n", _dev_desc.report_desc_len);
+    printf("Input report length\t\t\t%d\r\n", _dev_desc.input_report_len);
+    printf("Output report length\t\t\t%d\r\n", _dev_desc.output_report_len);
+    printf("Get feature report length\t\t%d\r\n", _dev_desc.getfeat_report_len);
+    printf("Set feature report length\t\t%d\r\n", _dev_desc.setfeat_report_len);
+    printf("Company ID\t\t\t\t%d\r\n", _dev_desc.cid);
+    printf("Device ID\t\t\t\t%d\r\n", _dev_desc.did);
+    printf("Product ID\t\t\t\t%d\r\n", _dev_desc.pid);
+    printf("Product ID\t\t\t\t%d\r\n", _dev_desc.uid);
+    printf("Product ID\t\t\t\t%d\r\n", _dev_desc.ucid);
     
     return true;
 }
@@ -439,7 +439,7 @@ bool NuBrickMaster::unserialize_device_desc(void) {
     _dev_desc.reserved2 = get16_le_next();
     
     if (_dev_desc.dev_desc_len != NuBrick_DeviceDesc_Len) {
-        NUBRICK_ERROR_RETURN_FALSE("Length of device descriptor doesn't match\n");
+        NUBRICK_ERROR_RETURN_FALSE("Length of device descriptor doesn't match\r\n");
     }
     
     return true;
@@ -451,7 +451,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     // Report descriptor length
     uint16_t report_desc_len = get16_le_next();
     if (report_desc_len != _dev_desc.report_desc_len) {
-        NUBRICK_ERROR_RETURN_FALSE("Length of report descriptor doesn't match\n");
+        NUBRICK_ERROR_RETURN_FALSE("Length of report descriptor doesn't match\r\n");
     }
     
     uint16_t desc_type;
@@ -466,7 +466,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     // Feature report descriptor type
     desc_type = get16_be_next();
     if (desc_type != NuBrick_DescType_FeatureReport) {
-        NUBRICK_ERROR_RETURN_FALSE("Expect feature report descriptor type %d, but %d received\n", NuBrick_DescType_FeatureReport, desc_type);
+        NUBRICK_ERROR_RETURN_FALSE("Expect feature report descriptor type %d, but %d received\r\n", NuBrick_DescType_FeatureReport, desc_type);
     }
     
     // Un-serialize feature report fields from report descriptor
@@ -474,7 +474,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     field_end = _feature_report_fields + _num_feature_report_fields;
     for (; field != field_end; field ++) {
         if (! unserialize_field_from_report_desc(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report_desc() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report_desc() failed\r\n");
         }
     }
 
@@ -486,7 +486,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     // Input report descriptor type
     desc_type = get16_be_next();
     if (desc_type != NuBrick_DescType_InputReport) {
-        NUBRICK_ERROR_RETURN_FALSE("Expect input report descriptor type %d, but %d received\n", NuBrick_DescType_InputReport, desc_type);
+        NUBRICK_ERROR_RETURN_FALSE("Expect input report descriptor type %d, but %d received\r\n", NuBrick_DescType_InputReport, desc_type);
     }
     
     // Un-serialize input report fields from report descriptor
@@ -494,7 +494,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     field_end = _input_report_fields + _num_input_report_fields;
     for (; field != field_end; field ++) {
         if (! unserialize_field_from_report_desc(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report_desc() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report_desc() failed\r\n");
         }
     }
     
@@ -506,7 +506,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     // Output report descriptor type
     desc_type = get16_be_next();
     if (desc_type != NuBrick_DescType_OutputReport) {
-        NUBRICK_ERROR_RETURN_FALSE("Expect output report descriptor type %d, but %d received\n", NuBrick_DescType_OutputReport, desc_type);
+        NUBRICK_ERROR_RETURN_FALSE("Expect output report descriptor type %d, but %d received\r\n", NuBrick_DescType_OutputReport, desc_type);
     }
     
     // Un-serialize output report fields from report descriptor
@@ -514,7 +514,7 @@ bool NuBrickMaster::unserialize_report_desc(void) {
     field_end = _output_report_fields + _num_output_report_fields;
     for (; field != field_end; field ++) {
         if (! unserialize_field_from_report_desc(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report_desc() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report_desc() failed\r\n");
         }
     }
     
@@ -526,7 +526,7 @@ bool NuBrickMaster::unserialize_input_report(void) {
     // Input report length
     uint16_t report_len = get16_le_next();
     if (report_len != _dev_desc.input_report_len) {
-        NUBRICK_ERROR_RETURN_FALSE("Length of input report doesn't match\n");
+        NUBRICK_ERROR_RETURN_FALSE("Length of input report doesn't match\r\n");
     }
 
     // Un-serialize fields from input report
@@ -534,7 +534,7 @@ bool NuBrickMaster::unserialize_input_report(void) {
     NuBrickField *field_end = _input_report_fields + _num_input_report_fields;
     for (; field != field_end; field ++) {
         if (! unserialize_field_from_report(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report() failed\r\n");
         }
     }
     
@@ -553,12 +553,12 @@ bool NuBrickMaster::serialize_output_report(void) {
     NuBrickField *field_end = _output_report_fields + _num_output_report_fields;
     for (; field != field_end; field ++) {
         if (! serialize_field_to_report(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("serialize_field_to_report() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("serialize_field_to_report() failed\r\n");
         }
     }
     
     if ((_i2c_buf_pos - i2c_buf_beg) != _dev_desc.output_report_len) {
-        NUBRICK_ERROR_RETURN_FALSE("Length of output report doesn't match\n");
+        NUBRICK_ERROR_RETURN_FALSE("Length of output report doesn't match\r\n");
     }
     
     return true;
@@ -569,7 +569,7 @@ bool NuBrickMaster::unserialize_feature_report(void) {
     // Feature report length
     uint16_t report_len = get16_le_next();
     if (report_len != _dev_desc.getfeat_report_len) {
-        NUBRICK_ERROR_RETURN_FALSE("Length of feature report doesn't match\n");
+        NUBRICK_ERROR_RETURN_FALSE("Length of feature report doesn't match\r\n");
     }
     
     // Un-serialize fields from feature report
@@ -577,7 +577,7 @@ bool NuBrickMaster::unserialize_feature_report(void) {
     NuBrickField *field_end = _feature_report_fields + _num_feature_report_fields;
     for (; field != field_end; field ++) {
         if (! unserialize_field_from_report(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("unserialize_field_from_report() failed\r\n");
         }
     }
     
@@ -596,12 +596,12 @@ bool NuBrickMaster::serialize_feature_report(void) {
     NuBrickField *field_end = _feature_report_fields + _num_feature_report_fields;
     for (; field != field_end; field ++) {
         if (! serialize_field_to_report(field)) {
-            NUBRICK_ERROR_RETURN_FALSE("serialize_field_to_report() failed\n");
+            NUBRICK_ERROR_RETURN_FALSE("serialize_field_to_report() failed\r\n");
         }
     }
     
     if ((_i2c_buf_pos - i2c_buf_beg) != _dev_desc.setfeat_report_len) {
-        NUBRICK_ERROR_RETURN_FALSE("Length of set feature report doesn't match\n");
+        NUBRICK_ERROR_RETURN_FALSE("Length of set feature report doesn't match\r\n");
     }
     
     return true;
@@ -611,13 +611,13 @@ bool NuBrickMaster::unserialize_field_from_report_desc(NuBrickField *field) {
     // Number/length of the field
     uint8_t field_index = get8_next();
     if (field_index != field->_field_index) {
-        NUBRICK_ERROR_RETURN_FALSE("Expect field index %d, but %d received\n", field->_field_index, field_index);
+        NUBRICK_ERROR_RETURN_FALSE("Expect field index %d, but %d received\r\n", field->_field_index, field_index);
     }
     
     // Length of the field
     field->_length = get8_next();
     if (field->_length != 1 && field->_length != 2) {
-        NUBRICK_ERROR_RETURN_FALSE("Expect field length 1/2, but %d received\n", field->_length);
+        NUBRICK_ERROR_RETURN_FALSE("Expect field length 1/2, but %d received\r\n", field->_length);
     }
     
     // Minimum of the field
@@ -632,7 +632,7 @@ bool NuBrickMaster::unserialize_field_from_report_desc(NuBrickField *field) {
             break;
             
         default:
-            NUBRICK_ERROR_RETURN_FALSE("Expect field minimum %d/%d, but %d received\n", NuBrick_ReportDesc_Min_Plus1, NuBrick_ReportDesc_Min_Plus2, min);
+            NUBRICK_ERROR_RETURN_FALSE("Expect field minimum %d/%d, but %d received\r\n", NuBrick_ReportDesc_Min_Plus1, NuBrick_ReportDesc_Min_Plus2, min);
     }
     
     // Maximum of the field
@@ -647,7 +647,7 @@ bool NuBrickMaster::unserialize_field_from_report_desc(NuBrickField *field) {
             break;
             
         default:
-            NUBRICK_ERROR_RETURN_FALSE("Expect field maximum %d/%d, but %d received\n", NuBrick_ReportDesc_Max_Plus1, NuBrick_ReportDesc_Max_Plus2, max);
+            NUBRICK_ERROR_RETURN_FALSE("Expect field maximum %d/%d, but %d received\r\n", NuBrick_ReportDesc_Max_Plus1, NuBrick_ReportDesc_Max_Plus2, max);
     }
     
     return true;
@@ -665,7 +665,7 @@ bool NuBrickMaster::unserialize_field_from_report(NuBrickField *field) {
             break;
             
         default:
-            NUBRICK_ERROR_RETURN_FALSE("Expect field length 1/2, but %d received\n", field->_length);
+            NUBRICK_ERROR_RETURN_FALSE("Expect field length 1/2, but %d received\r\n", field->_length);
     }
     
     return true;
@@ -683,7 +683,7 @@ bool NuBrickMaster::serialize_field_to_report(const NuBrickField *field) {
             break;
             
         default:
-            NUBRICK_ERROR_RETURN_FALSE("Expect field length 1/2, but %d received\n", field->_length);
+            NUBRICK_ERROR_RETURN_FALSE("Expect field length 1/2, but %d received\r\n", field->_length);
     }
     
     return true;
@@ -727,17 +727,17 @@ uint16_t NuBrickMaster::get16_be_next(void) {
     
 void NuBrickMaster::print_report(NuBrickField *fields, unsigned num_fields, const char *report_name) {
     
-    printf("Number of fields of %s\t%d\n", report_name, num_fields);
+    printf("Number of fields of %s\t%d\r\n", report_name, num_fields);
     
     unsigned i;
     for (i = 0; i < num_fields; i ++) {
         NuBrickField *field = fields + i;
         
-        printf("Name\t\t%s\n", field->_name);
-        printf("Length\t\t%d\n", field->_length);
-        printf("Value\t\t%d\n", field->_value);
-        printf("Minimum\t\t%d\n", field->_minimum);
-        printf("Maximum\t\t%d\n", field->_maximum);
-        printf("\n");
+        printf("Name\t\t%s\r\n", field->_name);
+        printf("Length\t\t%d\r\n", field->_length);
+        printf("Value\t\t%d\r\n", field->_value);
+        printf("Minimum\t\t%d\r\n", field->_minimum);
+        printf("Maximum\t\t%d\r\n", field->_maximum);
+        printf("\r\n");
     }
 }
