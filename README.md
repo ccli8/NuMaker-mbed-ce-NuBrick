@@ -40,7 +40,9 @@ A `NuBrickMaster` object exports associative array interface to access a field. 
 
 To access a specific field in a NuMaker Brick slave module, users need to pass field name in _report.field_ format into the C++ [] operator.
 Here, _report_ could only be _feature_, _input_, or _output_. For supported _report.field_ names in a NuMaker Brick slave module,
-please refer to respective `NuBrickMasterXxx.h` file in this library.
+please refer to respective `NuBrickMasterXxx.h` file in this library. For detailed description of each field, please refer to
+[user manual](http://www.nuvoton-m0.com/forum.php?mod=attachment&aid=MjI1OHw5MzU0ZDYzYXwxNDgwMDQ3NDEzfDB8MTcxMw%3D%3D)
+in the [zh-cn link](http://www.nuvoton-m0.com/forum.php?mod=viewthread&tid=1713&extra=page%3D1).
 
 ### Example: configure the NuMaker Brick slave module Buzzer
 
