@@ -1,6 +1,6 @@
-# NuMaker-mbed-NuBrick
-This library contains mbed implementation of [NuMaker Brick](http://www.nuvoton.com/hq/support/tool-and-software/development-tool-hardware/numaker-brick/?__locale=en) I2C protocol to communicate with NuMaker Brick slave modules.
-To see how this library is used in practice, we created a [NuMaker Brick example](https://developer.mbed.org/teams/Nuvoton/code/NuMaker-mbed-NuBrick-example/) to show how mbed enabled boards could communicate with NuMaker Brick slave modules.
+# Mbed CE implementation of NuMaker Brick I2C protocol
+This library contains Mbed CE implementation of [NuMaker Brick](http://www.nuvoton.com/hq/support/tool-and-software/development-tool-hardware/numaker-brick/?__locale=en) I2C protocol to communicate with NuMaker Brick slave modules.
+To see how this library is used in practice, we created a [NuMaker Brick example](https://github.com/OpenNuvotonMbed/NuMaker-mbed-ce-NuBrick-example) to show how Mbed CE enabled boards could communicate with NuMaker Brick slave modules.
 
 ## Support NuMaker Brick slave modules
 - Buzzer

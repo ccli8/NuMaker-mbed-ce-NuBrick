@@ -16,7 +16,7 @@
 #include "NuBrickMaster.h"
 #include <cstring>
 
-SingletonPtr<PlatformMutex> NuBrickMaster::_mutex;
+SingletonPtr<rtos::Mutex> NuBrickMaster::_mutex;
 
 NuBrickMaster::NuBrickMaster(I2C &i2c, int i2c_addr, bool debug)
     : _i2c(i2c), _i2c_addr(i2c_addr), 

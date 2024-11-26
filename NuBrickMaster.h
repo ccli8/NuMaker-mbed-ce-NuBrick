@@ -204,7 +204,7 @@ protected:
         }
     };
     
-    static SingletonPtr<PlatformMutex>  _mutex;
+    static SingletonPtr<rtos::Mutex>  _mutex;
     
     /** Add fields of feature report
      */
